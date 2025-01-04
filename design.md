@@ -15,15 +15,14 @@ designed and implemented.
 
 ### Inspiration
 
-- Lisp (and derivatives)
+- Lisp (and derivatives, specially Clojure)
 - Lua
 - Ruby
 - Haskell
 - Scala
 - Elixir
 - Kotlin
-
-In that order.
+- Groovy
 
 ### Philosophy
 
@@ -48,23 +47,43 @@ In that order.
 
 - `JavaObject` - A Java object
 - `KlynObject` - A Klyn object
-- `Number` - A number (64-bit floating point)
 - `Boolean` - A boolean
 - `Atom` - A symbol
 - `List` - A list
+- `Char` - A character (16-bit)
 - `String` - A string
 - `Function` - A function
 - `Nil` - An empty object
+
+Numeric types:
+
+- `Byte` - An 8-bit integer
+- `UByte` - An unsigned 8-bit integer
+- `Short` - A 16-bit integer
+- `UShort` - An unsigned 16-bit integer
+- `Int` - A 32-bit integer
+- `UInt` - An unsigned 32-bit integer
+- `Long` - A 64-bit integer
+- `ULong` - An unsigned 64-bit integer
+- `Float` - A 32-bit float
+- `Double` - A 64-bit float
+
+Additionally, there are extra types:
+
+- `Block` - A block of code
+- `Array` - An array
+- `Map` - A map
+- `Set` - A set
 
 ### Examples
 
 ```
 // This is a comment
 
-// This is a number
+// This is a integer, by default it is a 32-bit integer
 let myNum = 1;
 
-// This also a number
+// This is a float, by default it is a 32-bit float
 let pi = 3.14159;
 
 // Booleans are the same as in other languages
@@ -75,16 +94,17 @@ let isOne = (myNum == 1);
 let myAtom = :myAtom;
 
 // Lists are linked lists
+// They can contain any type of object, they are mutable
 let myList = [1, 2, 3, 4, 5];
 let alsoList = ["foo", 1, true, :mix];
 
-// Strings are immutable
+// Strings are mutable
 let myString = "Hello, world!";
 let alsoString = "This is" + " a string";
 
 // Functions are first-class
-let myFunc = (x) => x + 1;
-let alsoFunc = (x) => {
+let myFunc = (x) -> x + 1;
+let alsoFunc = (x) -> {
     x + 1;
 };
 
@@ -103,23 +123,28 @@ if (true) {
     // Do something else
 }
 
+// `loop` keyword is the only way to do loops
+// can be used as a traditional while loop
 let x = 1;
 loop (x < 10) {
     x = x + 1;
 }
 
+// as a do-while loop, with the keyword `do`
 let y = 1;
 do {
     y = y + 1;
 } loop (y < 10);
 
+// as a traditional for loop
+loop (let i = 0; i < 10; i = i + 1) {
+    // Do something
+}
+
+// as a for loop in modern languages
 let arr = [1, 2, 3, 4, 5];
 loop (let element in arr) {
     // Do something with element
-}
-
-loop (let i = 0; i < 10; i = i + 1) {
-    // Do something
 }
 ```
 
@@ -166,21 +191,30 @@ myStruct.z = 3;
 ```
 // Take `myStruct` from the previous example
 
+// `has` checks if a property exists in a object
 if (myStruct has inner) {
     // Do something, this is true
 }
 
+// `is` checks if a object is of a certain type
 let copyStruct = myStruct;
 if (copyStruct is myStruct) {
     // Do something, this is true
 }
 ```
 
+### Casting
+
+```
+let myNum = 1;
+let myFloat = myNum as Float;
+```
+
 #### Functions
 
 ```
-let add = (x, y) => x + y;
-let addOne = (x) => add(x, 1);
+let add = (x, y) -> x + y;
+let addOne = (x) -> add(x, 1);
 
 add(1, 2); // 3
 
@@ -191,7 +225,7 @@ let double = (x) {
 // Pipe operator
 let myValue = 2 |> double |> addOne; // 5
 
-fn myFunc(x, y) { // Same as `let myFunc = (x, y) => x + y;`
+fn myFunc(x, y) { // Same as `let myFunc = (x, y) -> x + y;`
     x + y;
 }
 ```
@@ -199,7 +233,7 @@ fn myFunc(x, y) { // Same as `let myFunc = (x, y) => x + y;`
 #### Objects
 
 ```
-// Everything is an object, that includes blocks and statements
+// Everything is an object, that includes blocks of code
 
 let myObject = {
     let x = 1;
@@ -233,4 +267,3 @@ myObject.add(); // 3
 
 All code or anything related to Klyn is licensed under the Apache 2.0 License. 
 See the `LICENSE` file for more information.
-```
